@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="ifce.ppd.tuplespace.controller.InitController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<AnchorPane prefHeight="619.0" prefWidth="749.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ifce.ppd.tuplespace.controller.InitController">
+   <children>
+       <Button layoutX="346.0" layoutY="271.0" onAction="#onHelloButtonClick" text="Entrar" />
+      <TextField fx:id="usernameInput" layoutX="289.0" layoutY="229.0" />
+      <Text layoutX="289.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome de usuário" wrappingWidth="152.0" />
+      <Text layoutX="197.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Java Spaces Chat" textAlignment="CENTER" wrappingWidth="356.0">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Text>
+      <Text fx:id="usernameFieldErrorMessage" fill="RED" layoutX="289.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+   </children>
+</AnchorPane>
