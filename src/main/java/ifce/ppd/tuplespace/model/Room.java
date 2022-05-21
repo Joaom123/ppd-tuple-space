@@ -1,12 +1,16 @@
 package ifce.ppd.tuplespace.model;
 
-public class Room {
-    private String id;
-    private User[] users;
+import net.jini.core.entry.Entry;
+import java.util.UUID;
 
-    public Room(String id) {
+public class Room implements Entry {
+    public UUID id;
+    public User[] users;
+
+    public Room(UUID id) {
         this.id = id;
     }
 
-
+    public Room() {
+    }
 }
