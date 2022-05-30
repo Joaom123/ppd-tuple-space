@@ -13,11 +13,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class InitController {
-    @FXML
-    private TextField usernameInput;
+    @FXML private TextField usernameInput;
 
-    @FXML
-    private Text usernameFieldErrorMessage;
+    @FXML private Text usernameFieldErrorMessage;
 
     @FXML
     protected void onHelloButtonClick(ActionEvent actionEvent) throws IOException {

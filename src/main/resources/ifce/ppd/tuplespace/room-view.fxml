@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="673.0" prefWidth="860.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ifce.ppd.tuplespace.controller.RoomController">
+<AnchorPane prefHeight="560.0" prefWidth="860.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Text layoutX="296.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Java Spaces Chat">
          <font>
             <Font size="31.0" />
          </font>
       </Text>
-      <TextArea layoutX="57.0" layoutY="86.0" prefHeight="395.0" prefWidth="440.0" />
-      <TextField layoutX="57.0" layoutY="504.0" prefHeight="24.0" prefWidth="440.0" />
+      <TextArea fx:id="messageArea" disable="true" layoutX="57.0" layoutY="86.0" prefHeight="395.0" prefWidth="440.0" />
+      <TextField fx:id="messageInput" layoutX="57.0" layoutY="491.0" onAction="#handleChatInput" prefHeight="24.0" prefWidth="440.0" promptText="Digite sua mensagem" />
       <Text layoutX="642.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuários">
          <font>
             <Font size="23.0" />
          </font>
       </Text>
+      <ListView fx:id="usersListView" layoutX="561.0" layoutY="86.0" prefHeight="395.0" prefWidth="255.0" />
+      <Button layoutX="644.0" layoutY="492.0" mnemonicParsing="false" onAction="#onExitRoom" text="Sair da Sala" />
    </children>
 </AnchorPane>
