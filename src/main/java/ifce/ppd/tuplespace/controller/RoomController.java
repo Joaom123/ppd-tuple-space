@@ -54,7 +54,7 @@ public class RoomController implements Initializable {
     @FXML
     protected void onExitRoom(ActionEvent actionEvent) throws IOException, UnusableEntryException, TransactionException, InterruptedException {
         // Add user to room
-        ListRoom listRoom = (ListRoom) javaSpaces.take(new ListRoom(), null, 6);
+        ListRoom listRoom = (ListRoom) javaSpaces.take(new ListRoom(), null, 5);
 
         Room nRoom = listRoom.getById(user.room.id);
 
@@ -81,7 +81,7 @@ public class RoomController implements Initializable {
                 Platform.runLater(() -> {
                     ListRoom listRoom = null;
                     try {
-                        listRoom = (ListRoom) javaSpaces.read(new ListRoom(), null, 6);
+                        listRoom = (ListRoom) javaSpaces.read(new ListRoom(), null, 5);
                         if (listRoom != null) {
                             Room room = listRoom.getById(user.room.id);
                             usersListView.getItems().clear();
@@ -89,14 +89,14 @@ public class RoomController implements Initializable {
                                 usersListView.getItems().add(u);
                         }
 
-                        Message message = (Message) javaSpaces.read(new Message(), null, 6);
+                        Message message = (Message) javaSpaces.read(new Message(), null, 5);
 
                         System.out.println(message);
                         if (message == null) return;
                         System.out.println(message.content);
                         System.out.println(message.author.name);
 
-                        if (!message.author.equals(user) && !message.roomId.equals(user.room.id)) {
+                        if (!message.author.equals(user) && message.roomId.equals(user.room.id)) {
                             addMessageToChat(message.author.name, message.content);
                         }
                     } catch (UnusableEntryException | TransactionException | InterruptedException | RemoteException e) {
