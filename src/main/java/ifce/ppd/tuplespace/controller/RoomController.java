@@ -25,10 +25,7 @@ import net.jini.space.JavaSpace;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
+import java.util.*;
 
 public class RoomController implements Initializable {
     @FXML public TextArea messageArea;
@@ -40,9 +37,11 @@ public class RoomController implements Initializable {
     private User selectedUser;
     private Timer timer;
     private String selectedUserText;
+    private Set<Message> messageSet;
 
     public RoomController(User user) {
         this.user = user;
+        messageSet = new HashSet<>();
 
         System.out.println("Procurando serviço JavaSpace...");
         Lookup finder = new Lookup(JavaSpace.class);
@@ -91,14 +90,22 @@ public class RoomController implements Initializable {
                             for (User u : room.users)
                                 usersListView.getItems().add(u);
                         }
+                    } catch (UnusableEntryException | TransactionException | InterruptedException | RemoteException e) {
+                        e.printStackTrace();
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
+        }, 0, 2000);
 
-                        Message message = (Message) javaSpaces.read(new Message(), null, 30);
-
-                        System.out.println(message);
-                        if (message == null) return;
-                        System.out.println(message.content);
-                        System.out.println(message.author.name);
-
+        timer.schedule( new TimerTask()
+        {
+            public void run() {
+                Platform.runLater(() -> {
+                    try {
+                        Message message = (Message) javaSpaces.read(new Message(), null, 200);
+                        if (message == null || messageSet.contains(message)) return;
+                        messageSet.add(message);
                         if (!message.author.equals(user) && message.roomId.equals(user.room.id) && message.receiver == null)
                             addMessageToChat(message.author.name, message.content);
                         if (!message.author.equals(user) && message.roomId.equals(user.room.id) && message.receiver != null && message.receiver.id.equals(user.id))
@@ -109,7 +116,7 @@ public class RoomController implements Initializable {
                     }
                 });
             }
-        }, 0, 2000);
+        }, 0, 800);
     }
 
     private void addMessageToChat(String author, String message) {
@@ -129,7 +136,7 @@ public class RoomController implements Initializable {
 
         // Send inputText to javaSpaces
         Message message = new Message(UUID.randomUUID(), user.room.id, user, inputText);
-        if(selectedUser != null && messageInput.getText().contains(selectedUserText))
+        if(selectedUser != null && inputText.contains(selectedUserText))
             message.receiver = selectedUser;
         javaSpaces.write(message, null, 1000);
     }

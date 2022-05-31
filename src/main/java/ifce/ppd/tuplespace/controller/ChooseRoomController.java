@@ -62,6 +62,8 @@ public class ChooseRoomController implements Initializable {
 
     @FXML public void handleMouseClick(MouseEvent arg0) {
         Room clickedRoom = roomListView.getSelectionModel().getSelectedItem();
+        if(clickedRoom == null) return;
+
         userListView.getItems().clear();
 
         if (clickedRoom.users == null)
