@@ -45,8 +45,6 @@ public class ChooseRoomController implements Initializable {
     public ChooseRoomController(User user) {
         this.usernameInput = user.name;
         this.user = user;
-        username.setText(user.name);
-        id.setText(user.id.toString());
     }
 
     @FXML
@@ -124,15 +122,15 @@ public class ChooseRoomController implements Initializable {
         if (user == null) {
             user = new User(UUID.randomUUID(), usernameInput);
 
-            username.setText(user.name);
-            id.setText(user.id.toString());
-
             try {
                 javaSpaces.write(user, null, Lease.FOREVER);
             } catch (TransactionException | RemoteException e) {
                 throw new RuntimeException(e);
             }
         }
+
+        username.setText(user.name);
+        id.setText(user.id.toString());
 
         timer = new Timer();
         timer.schedule( new TimerTask()

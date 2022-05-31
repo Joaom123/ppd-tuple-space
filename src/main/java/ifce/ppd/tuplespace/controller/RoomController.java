@@ -17,6 +17,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import net.jini.core.entry.UnusableEntryException;
 import net.jini.core.lease.Lease;
@@ -31,6 +32,8 @@ public class RoomController implements Initializable {
     @FXML public TextArea messageArea;
     @FXML public TextField messageInput;
     @FXML public ListView usersListView;
+    @FXML public Text usernameText;
+    @FXML public Text idText;
 
     private JavaSpace javaSpaces;
     private User user;
@@ -76,6 +79,9 @@ public class RoomController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        usernameText.setText(user.name);
+        idText.setText(user.id.toString());
+
         timer = new Timer();
         timer.schedule( new TimerTask()
         {
