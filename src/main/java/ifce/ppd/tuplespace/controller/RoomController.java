@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import net.jini.core.entry.UnusableEntryException;
 import net.jini.core.lease.Lease;
@@ -36,7 +37,9 @@ public class RoomController implements Initializable {
 
     private JavaSpace javaSpaces;
     private User user;
+    private User selectedUser;
     private Timer timer;
+    private String selectedUserText;
 
     public RoomController(User user) {
         this.user = user;
@@ -54,7 +57,7 @@ public class RoomController implements Initializable {
     @FXML
     protected void onExitRoom(ActionEvent actionEvent) throws IOException, UnusableEntryException, TransactionException, InterruptedException {
         // Add user to room
-        ListRoom listRoom = (ListRoom) javaSpaces.take(new ListRoom(), null, 5);
+        ListRoom listRoom = (ListRoom) javaSpaces.take(new ListRoom(UUID.fromString("5fc03087-d265-11e7-b8c6-83e29cd24f4c")), null, 5);
 
         Room nRoom = listRoom.getById(user.room.id);
 
@@ -81,7 +84,7 @@ public class RoomController implements Initializable {
                 Platform.runLater(() -> {
                     ListRoom listRoom = null;
                     try {
-                        listRoom = (ListRoom) javaSpaces.read(new ListRoom(), null, 5);
+                        listRoom = (ListRoom) javaSpaces.read(new ListRoom(UUID.fromString("5fc03087-d265-11e7-b8c6-83e29cd24f4c")), null, 30);
                         if (listRoom != null) {
                             Room room = listRoom.getById(user.room.id);
                             usersListView.getItems().clear();
@@ -89,16 +92,17 @@ public class RoomController implements Initializable {
                                 usersListView.getItems().add(u);
                         }
 
-                        Message message = (Message) javaSpaces.read(new Message(), null, 5);
+                        Message message = (Message) javaSpaces.read(new Message(), null, 30);
 
                         System.out.println(message);
                         if (message == null) return;
                         System.out.println(message.content);
                         System.out.println(message.author.name);
 
-                        if (!message.author.equals(user) && message.roomId.equals(user.room.id)) {
+                        if (!message.author.equals(user) && message.roomId.equals(user.room.id) && message.receiver == null)
                             addMessageToChat(message.author.name, message.content);
-                        }
+                        if (!message.author.equals(user) && message.roomId.equals(user.room.id) && message.receiver != null && message.receiver.id.equals(user.id))
+                            addMessageToChat(message.author.name, message.content);
                     } catch (UnusableEntryException | TransactionException | InterruptedException | RemoteException e) {
                         e.printStackTrace();
                         throw new RuntimeException(e);
@@ -125,6 +129,19 @@ public class RoomController implements Initializable {
 
         // Send inputText to javaSpaces
         Message message = new Message(UUID.randomUUID(), user.room.id, user, inputText);
-        javaSpaces.write(message, null, 2000);
+        if(selectedUser != null && messageInput.getText().contains(selectedUserText))
+            message.receiver = selectedUser;
+        javaSpaces.write(message, null, 1000);
+    }
+
+    @FXML public void handleMouseClick(MouseEvent arg0) {
+        selectedUser = (User) usersListView.getSelectionModel().getSelectedItem();
+        if(selectedUser.equals(user))
+            selectedUser = null;
+        if (selectedUser == null)
+            return;
+        String actualText = messageInput.getText();
+        selectedUserText = "@" + selectedUser.name;
+        messageInput.setText(selectedUserText + " " + actualText);
     }
 }

@@ -79,7 +79,7 @@ public class ChooseRoomController implements Initializable {
         Room room = roomListView.getSelectionModel().getSelectedItem();
 
         // Add user to room
-        ListRoom listRoom = (ListRoom) javaSpaces.take(new ListRoom(), null, 5);
+        ListRoom listRoom = (ListRoom) javaSpaces.take(new ListRoom(UUID.fromString("5fc03087-d265-11e7-b8c6-83e29cd24f4c")), null, 5);
 
         Room nRoom = listRoom.getById(room.id);
         if(nRoom.users == null) nRoom.users = new HashSet<>();
@@ -140,7 +140,7 @@ public class ChooseRoomController implements Initializable {
                     cleanRoomList();
                     ListRoom listRoom = null;
                     try {
-                        listRoom = (ListRoom) javaSpaces.read(new ListRoom(), null, 5);
+                        listRoom = (ListRoom) javaSpaces.readIfExists(new ListRoom(UUID.fromString("5fc03087-d265-11e7-b8c6-83e29cd24f4c")), null, 5);
                         System.out.println("ListRoom: " + listRoom);
                         if (listRoom != null) {
                             updateRoomList(listRoom);

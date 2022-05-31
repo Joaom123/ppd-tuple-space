@@ -5,6 +5,8 @@ import net.jini.core.entry.Entry;
 import java.util.UUID;
 
 public class Message implements Entry {
+    private static final long serialVersionUID = -1L;
+
     public UUID id;
     public UUID roomId;
     public User author;

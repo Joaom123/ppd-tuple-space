@@ -22,7 +22,7 @@
             <Font size="23.0" />
          </font>
       </Text>
-      <ListView fx:id="usersListView" layoutX="561.0" layoutY="86.0" prefHeight="395.0" prefWidth="255.0" />
+      <ListView fx:id="usersListView" layoutX="561.0" layoutY="86.0" onMouseClicked="#handleMouseClick" prefHeight="395.0" prefWidth="255.0" />
       <Button layoutX="644.0" layoutY="492.0" mnemonicParsing="false" onAction="#onExitRoom" text="Sair da Sala" />
    </children>
 </AnchorPane>

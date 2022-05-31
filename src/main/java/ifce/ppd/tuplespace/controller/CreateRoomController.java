@@ -35,10 +35,10 @@ public class CreateRoomController {
 
         try {
             Room room = new Room(UUID.randomUUID(), roomName.getText());
-            ListRoom roomList = (ListRoom) javaSpaces.take(new ListRoom(), null, 5);
+            ListRoom roomList = (ListRoom) javaSpaces.take(new ListRoom(UUID.fromString("5fc03087-d265-11e7-b8c6-83e29cd24f4c")), null, 5);
 
             if (roomList == null) {
-                roomList = new ListRoom();
+                roomList = new ListRoom(UUID.fromString("5fc03087-d265-11e7-b8c6-83e29cd24f4c"));
                 roomList.init();
             }
 
